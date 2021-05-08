@@ -67,11 +67,29 @@ def compute_iou(output, target, bbox_inside_weights, bbox_outside_weights,
 
     area_c = (xc2 - xc1) * (yc2 - yc1) + 1e-7
     miouk = iouk - ((area_c - unionk) / area_c)
+
+    area_cpp = area_c
+
+    area_cpp -= torch.maximum(x2 - x2g, 0) * torch.maximum(y1 - y1g, 0)
+    area_cpp -= torch.maximum(-x2 + x2g, 0) * torch.maximum(-y1 + y1g, 0)
+
+    area_cpp -= torch.maximum(x1 - x1g, 0) * torch.maximum(y2 - y2g, 0)
+    area_cpp -= torch.maximum(-x1 + x1g, 0) * torch.maximum(-y2 + y2g, 0)
+
+    area_cpp -= torch.maximum(x2 - x2g, 0) * torch.maximum(y2 - y2g, 0)
+    area_cpp -= torch.maximum(-x2 + x2g, 0) * torch.maximum(-y2 + y2g, 0)
+
+    area_cpp -= torch.maximum(x1 - x1g, 0) * torch.maximum(y1 - y1g, 0)
+    area_cpp -= torch.maximum(-x1 + x1g, 0) * torch.maximum(-y1 + y1g, 0)
+
+    gioupp = iouk - ((area_cpp - unionk) / area_cpp)
+
     iou_weights = bbox_inside_weights.view(-1, 4).mean(1) * bbox_outside_weights.view(-1, 4).mean(1)
     iouk = ((1 - iouk) * iou_weights).sum(0) / batch_size
     miouk = ((1 - miouk) * iou_weights).sum(0) / batch_size
+    gioupp = ((1 - gioupp) * iou_weights).sum(0) / batch_size
 
-    return iouk, miouk
+    return iouk, miouk, gioupp
 
 
 def smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights, bbox_outside_weights, beta=1.0):

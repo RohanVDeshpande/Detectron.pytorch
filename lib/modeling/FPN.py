@@ -456,7 +456,7 @@ def fpn_rpn_losses(**kwargs):
             kwargs['rpn_bbox_pred_fpn' + slvl], rpn_bbox_targets_fpn,
             rpn_bbox_inside_weights_fpn, rpn_bbox_outside_weights_fpn,
             beta=1/9)
-        iou_loss_rpn_bbox_fpn, giou_loss_rpn_bbox_fpn = net_utils.compute_iou(
+        iou_loss_rpn_bbox_fpn, giou_loss_rpn_bbox_fpn, gioupp_loss_rpn_bbox_fpn = net_utils.compute_iou(
             kwargs['rpn_bbox_pred_fpn' + slvl].permute(0, 2, 3, 1).reshape(-1, 4),
             rpn_bbox_targets_fpn.permute(0, 2, 3, 1).reshape(-1, 4),
             rpn_bbox_inside_weights_fpn.permute(0, 2, 3, 1).reshape(-1, 4),
@@ -469,6 +469,8 @@ def fpn_rpn_losses(**kwargs):
             loss_rpn_bbox_fpn = iou_loss_rpn_bbox_fpn
         elif cfg.MODEL.RPN_LOSS_TYPE == 'giou':
             loss_rpn_bbox_fpn = giou_loss_rpn_bbox_fpn
+        elif cfg.MODEL.RPN_LOSS_TYPE == 'gioupp':
+            loss_rpn_bbox_fpn = gioupp_loss_rpn_bbox_fpn
         else:
             raise ValueError('Invalid loss type: ' + cfg.MODEL.RPN_LOSS_TYPE)
 
