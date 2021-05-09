@@ -2,9 +2,6 @@
 
 Faster/Mask R-CNN with GIoU loss implemented in PyTorch
 
-<<<<<<< HEAD
-If you use this work, please consider citing:
-=======
 <div align="center">
 
 <img src="demo/33823288584_1d21cf0a26_k-pydetectron-R101-FPN.jpg" width="700px"/>
@@ -178,8 +175,8 @@ Download them and put them into the `{repo_root}/data/pretrained_model`.
 You can the following command to download them all:
 
 - extra required packages: `argparse_color_formater`, `colorama`, `requests`
->>>>>>> c780eb3d22808911978b317fe97cf544c8c47d8b
 
+If you use this work, please consider citing:
 ```
 @article{Rezatofighi_2018_CVPR,
   author    = {Rezatofighi, Hamid and Tsoi, Nathan and Gwak, JunYoung and Sadeghian, Amir and Reid, Ian and Savarese, Silvio},
