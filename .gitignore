@@ -1,4 +1,7 @@
 venv
+visualize_env
+slurm*
+Outputs.zip
 data/*
 *.pyc
 *~

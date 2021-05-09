@@ -58,7 +58,7 @@ def fast_rcnn_losses(cls_score, bbox_pred, label_int32, bbox_targets,
     bbox_outside_weights = Variable(torch.from_numpy(bbox_outside_weights)).cuda(device_id)
     sl1_loss_bbox = net_utils.smooth_l1_loss(
         bbox_pred, bbox_targets, bbox_inside_weights, bbox_outside_weights)
-    iou_loss_bbox, giou_loss_bbox = net_utils.compute_iou(
+    iou_loss_bbox, giou_loss_bbox, gioupp_loss_bbox = net_utils.compute_iou(
         bbox_pred, bbox_targets, bbox_inside_weights, bbox_outside_weights,
         transform_weights=cfg.MODEL.BBOX_REG_WEIGHTS)
     if cfg.MODEL.LOSS_TYPE == 'smooth_l1':
@@ -67,6 +67,8 @@ def fast_rcnn_losses(cls_score, bbox_pred, label_int32, bbox_targets,
         loss_bbox = iou_loss_bbox
     elif cfg.MODEL.LOSS_TYPE == 'giou':
         loss_bbox = giou_loss_bbox
+    elif cfg.MODEL.LOSS_TYPE == 'gioupp':
+        loss_bbox = gioupp_loss_bbox
     else:
         raise ValueError('Invalid loss type: ' + cfg.MODEL.LOSS_TYPE)
 
