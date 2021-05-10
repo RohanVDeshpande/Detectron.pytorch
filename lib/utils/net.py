@@ -70,14 +70,14 @@ def compute_iou(output, target, bbox_inside_weights, bbox_outside_weights,
 
     zero = torch.zeros(1)
 
-    area_cpp = area_c - torch.maximum(x2 - x2g, zero[0]) * torch.maximum(y1 - y1g, zero[0]) \
+    area_cpp = area_c - (torch.maximum(x2 - x2g, zero[0]) * torch.maximum(y1 - y1g, zero[0]) \
                - torch.maximum(-x2 + x2g, zero[0]) * torch.maximum(-y1 + y1g, zero[0]) \
                - torch.maximum(x1 - x1g, zero[0]) * torch.maximum(y2 - y2g, zero[0]) \
                - torch.maximum(-x1 + x1g, zero[0]) * torch.maximum(-y2 + y2g, zero[0]) \
                - torch.maximum(x2 - x2g, zero[0]) * torch.maximum(y2g - y2, zero[0]) \
                - torch.maximum(-x2 + x2g, zero[0]) * torch.maximum(-y2g + y2, zero[0]) \
                - torch.maximum(x1 - x1g, zero[0]) * torch.maximum(y1g - y1, zero[0]) \
-               - torch.maximum(-x1 + x1g, zero[0]) * torch.maximum(-y1g + y1, zero[0])
+               - torch.maximum(-x1 + x1g, zero[0]) * torch.maximum(-y1g + y1, zero[0]))/2
 
     gioupp = iouk - ((area_cpp - unionk) / area_cpp)
 
